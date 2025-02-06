@@ -1,0 +1,33 @@
+import random
+
+# Komputer losuje liczbę z zakresu 1-100
+secret_number = random.randint(1, 100)
+
+# Gracz ma 7 prób
+guesses_left = 7
+
+print("Zgadnij liczbę z zakresu 1-100.")
+
+while guesses_left > 0:
+    try:
+        # Pobranie odpowiedzi od gracza
+        guess = int(input("Podaj swoją odpowiedź: "))
+    except ValueError:
+        print("Nieprawidłowa wartość. Podaj liczbę.")
+        continue
+
+    # Sprawdzenie odpowiedzi
+    if guess == secret_number:
+        print("Brawo! Zgadłeś liczbę w", 7 - guesses_left, "próbach.")
+        break
+    elif guess < secret_number:
+        print("Za mało!")
+    else:
+        print("Za dużo!")
+
+    guesses_left -= 1
+    print("Pozostało prób:", guesses_left)
+
+# Koniec gry, jeśli gracz nie zgadł liczby
+if guesses_left == 0:
+    print("Niestety, nie udało ci się zgadnąć. Liczba to:", secret_number)
