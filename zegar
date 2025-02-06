@@ -1,0 +1,64 @@
+import pygame
+import time
+import math
+
+# Inicjalizacja Pygame
+pygame.init()
+
+# Ustawienia okna gry
+width = 400
+height = 400
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Zegar Analogowy")
+
+# Kolory
+black = (0, 0, 0)
+white = (255, 255, 255)
+red = (255, 0, 0)
+
+# Środek zegara
+center_x = width // 2
+center_y = height // 2
+
+# Długość wskazówek
+hour_hand_length = 100
+minute_hand_length = 150
+second_hand_length = 180
+
+# Główna pętla gry
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    # Pobranie aktualnego czasu
+    current_time = time.localtime()
+    hour = current_time.tm_hour % 12
+    minute = current_time.tm_min
+    second = current_time.tm_sec
+
+    # Obliczenie kątów wskazówek
+    hour_angle = (hour * 30 + minute / 2) * math.pi / 180
+    minute_angle = minute * 6 * math.pi / 180
+    second_angle = second * 6 * math.pi / 180
+
+    # Obliczenie pozycji końcówek wskazówek
+    hour_hand_x = center_x + hour_hand_length * math.sin(hour_angle)
+    hour_hand_y = center_y - hour_hand_length * math.cos(hour_angle)
+    minute_hand_x = center_x + minute_hand_length * math.sin(minute_angle)
+    minute_hand_y = center_y - minute_hand_length * math.cos(minute_angle)
+    second_hand_x = center_x + second_hand_length * math.sin(second_angle)
+    second_hand_y = center_y - second_hand_length * math.cos(second_angle)
+
+    # Rysowanie
+    screen.fill(white)
+    pygame.draw.circle(screen, black, (center_x, center_y), 200, 5)  # Tarcza zegara
+    pygame.draw.line(screen, black, (center_x, center_y), (hour_hand_x, hour_hand_y), 8)  # Wskazówka godzinowa
+    pygame.draw.line(screen, black, (center_x, center_y), (minute_hand_x, minute_hand_y), 5)  # Wskazówka minutowa
+    pygame.draw.line(screen, red, (center_x, center_y), (second_hand_x, second_hand_y), 2)  # Wskazówka sekundowa
+
+    pygame.display.flip()
+    time.sleep(1)  # Oczekiwanie 1 sekundy
+
+pygame.quit()
